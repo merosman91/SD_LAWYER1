@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>موقع المحامي السوداني</title>
+  <title>موقع المحامي السوداني - الاستشارات القانونية المتخصصة</title>
+  <meta name="description" content="مكتب المحامي السوداني يقدم خدمات قانونية متكاملة، استشارات قانونية، صياغة عقود، وتمثيل في المحاكم">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -14,6 +15,7 @@
       --dark-color: #2c3e50;
       --text-color: #333;
       --shadow: 0 2px 10px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
     }
     
     * {
@@ -30,6 +32,24 @@
       background: #f9f9f9;
       color: var(--text-color);
       line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+    
+    /* شريط التقدم */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1001;
+    }
+    
+    .progress-bar {
+      height: 4px;
+      background: var(--secondary-color);
+      width: 0%;
+      transition: width 0.3s ease;
     }
     
     header {
@@ -46,11 +66,22 @@
       box-shadow: var(--shadow);
       z-index: 1000;
       flex-wrap: wrap;
+      transition: var(--transition);
+    }
+    
+    header.sticky {
+      padding: 10px 20px;
+      background: rgba(44, 62, 80, 0.95);
     }
     
     header img {
       height: 40px;
       margin-left: 10px;
+      transition: var(--transition);
+    }
+    
+    header.sticky img {
+      height: 35px;
     }
     
     header .title {
@@ -58,6 +89,11 @@
       text-align: center;
       font-size: 20px;
       font-weight: bold;
+      transition: var(--transition);
+    }
+    
+    header.sticky .title {
+      font-size: 18px;
     }
     
     header .contact {
@@ -65,6 +101,11 @@
       text-align: left;
       display: flex;
       flex-direction: column;
+      transition: var(--transition);
+    }
+    
+    header.sticky .contact {
+      font-size: 12px;
     }
     
     .mobile-menu-btn {
@@ -104,12 +145,14 @@
     .hero h1 {
       font-size: 2.5rem;
       margin-bottom: 20px;
+      animation: fadeInUp 1s ease;
     }
     
     .hero p {
       font-size: 1.2rem;
       max-width: 800px;
       margin: 0 auto 30px;
+      animation: fadeInUp 1.2s ease;
     }
     
     .hero-btn {
@@ -120,12 +163,15 @@
       border-radius: 5px;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: var(--transition);
+      animation: fadeInUp 1.4s ease;
     }
     
     .hero-btn:hover {
       background: var(--accent-color);
       color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
     .features {
@@ -141,11 +187,19 @@
       border-radius: 10px;
       box-shadow: var(--shadow);
       text-align: center;
-      transition: transform 0.3s ease;
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .feature-card.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .feature-card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
     
     .feature-icon {
@@ -178,6 +232,14 @@
     
     .stat-item {
       padding: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .stat-item.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .stat-number {
@@ -209,6 +271,14 @@
       border-radius: 10px;
       box-shadow: var(--shadow);
       position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .testimonial.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .testimonial-text {
@@ -261,7 +331,7 @@
       border-radius: 5px;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: var(--transition);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -285,6 +355,7 @@
     .contact-btn:hover {
       opacity: 0.9;
       transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     
     .nav {
@@ -297,6 +368,9 @@
       padding: 15px;
       border-radius: 10px;
       box-shadow: var(--shadow);
+      position: sticky;
+      top: 90px;
+      z-index: 999;
     }
     
     .nav button {
@@ -306,7 +380,7 @@
       color: white;
       cursor: pointer;
       border-radius: 5px;
-      transition: all 0.3s ease;
+      transition: var(--transition);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -376,6 +450,9 @@
       background: white;
       border-radius: 10px;
       box-shadow: var(--shadow);
+      position: sticky;
+      top: 150px;
+      z-index: 998;
     }
     
     .search-box input {
@@ -384,6 +461,13 @@
       border: 1px solid #ddd;
       border-radius: 5px;
       font-size: 16px;
+      transition: var(--transition);
+    }
+    
+    .search-box input:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 2px rgba(26, 188, 156, 0.2);
+      outline: none;
     }
     
     .export-btn {
@@ -394,7 +478,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: var(--transition);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -403,18 +487,49 @@
     .export-btn:hover {
       background: #c0392b;
       transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     
     footer {
       background: var(--primary-color);
       color: white;
       text-align: center;
-      padding: 20px;
+      padding: 30px 20px;
       margin-top: 40px;
     }
     
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      text-align: right;
+    }
+    
+    .footer-section h3 {
+      margin-bottom: 20px;
+      color: var(--secondary-color);
+    }
+    
+    .footer-section p {
+      margin-bottom: 10px;
+    }
+    
+    .footer-bottom {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    /* أنيميشنز */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
     
@@ -438,6 +553,12 @@
       .nav {
         flex-direction: column;
         display: none;
+        position: fixed;
+        top: 80px;
+        right: 0;
+        left: 0;
+        border-radius: 0;
+        z-index: 1000;
       }
       
       .nav.active {
@@ -460,11 +581,21 @@
       .contact-buttons {
         flex-direction: column;
       }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
+  <!-- شريط التقدم -->
+  <div class="progress-container">
+    <div class="progress-bar" id="myProgressBar"></div>
+  </div>
+
+  <header id="mainHeader">
     <div class="logo">
       <img src="https://cdn-icons-png.flaticon.com/512/1047/1047711.png" alt="شعار المكتب">
     </div>
@@ -716,7 +847,30 @@
   </main>
 
   <footer>
-    <p>© 2023 مكتب المحامي السوداني. جميع الحقوق محفوظة.</p>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>عن المكتب</h3>
+        <p>مكتب المحامي السوداني يقدم خدمات قانونية متكاملة بمهنية عالية وخبرة واسعة في مختلف المجالات القانونية.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>روابط سريعة</h3>
+        <p><a href="#" onclick="showSection('home'); return false;" style="color: white;">الرئيسية</a></p>
+        <p><a href="#" onclick="showSection('laws'); return false;" style="color: white;">القوانين</a></p>
+        <p><a href="#" onclick="showSection('contracts'); return false;" style="color: white;">العقود</a></p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>معلومات التواصل</h3>
+        <p><i class="fas fa-phone"></i> 0123456789</p>
+        <p><i class="fas fa-envelope"></i> lawyer@example.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> الخرطوم – السودان</p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>© 2023 مكتب المحامي السوداني. جميع الحقوق محفوظة.</p>
+    </div>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -724,7 +878,57 @@
     // عرض الشاشة الرئيسية عند التحميل
     window.onload = function() {
       showSection('home');
+      initAnimations();
+      window.addEventListener('scroll', handleScroll);
     };
+
+    // إدارة حدث التمرير
+    function handleScroll() {
+      // شريط التقدم
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("myProgressBar").style.width = scrolled + "%";
+      
+      // الشريط العلوي اللاصق
+      const header = document.getElementById("mainHeader");
+      if (window.scrollY > 100) {
+        header.classList.add("sticky");
+      } else {
+        header.classList.remove("sticky");
+      }
+      
+      // تحريك العناصر عند التمرير
+      handleScrollAnimations();
+    }
+
+    // تهيئة الأنيميشنز
+    function initAnimations() {
+      // جعل جميع العناصر المخفية غير مرئية في البداية
+      const elementsToAnimate = document.querySelectorAll('.feature-card, .stat-item, .testimonial');
+      elementsToAnimate.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+      });
+      
+      // تشغيل الأنيميشن بعد التهيئة
+      setTimeout(handleScrollAnimations, 100);
+    }
+
+    // التعامل مع أنيميشن التمرير
+    function handleScrollAnimations() {
+      const elementsToAnimate = document.querySelectorAll('.feature-card, .stat-item, .testimonial');
+      const windowHeight = window.innerHeight;
+      
+      elementsToAnimate.forEach(el => {
+        const elementTop = el.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          el.classList.add("visible");
+        }
+      });
+    }
 
     function toggleMenu() {
       const nav = document.getElementById('main-nav');
@@ -739,6 +943,9 @@
       
       // إظهار القسم المحدد
       document.getElementById(id).style.display = 'block';
+      
+      // التمرير إلى الأعلى عند تغيير القسم
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
       // تحديث الأزرار النشطة
       document.querySelectorAll('nav button').forEach(btn => {
@@ -777,7 +984,7 @@
         });
         
         // إظهار الأقسام التي تحتوي على نتائج فقط
-        if (hasMatch && !section.classList.contains('active')) {
+        if (hasMatch && section.style.display === 'none') {
           showSection(section.id);
         }
       });
