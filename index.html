@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>موقع المحامي السوداني</title>
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+      background: #f9f9f9;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      background: #2c3e50;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    header img {
+      height: 40px;
+      margin-left: 10px;
+    }
+    header .title {
+      flex: 1;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    header .contact {
+      font-size: 14px;
+      text-align: left;
+    }
+    main {
+      margin-top: 100px;
+      padding: 20px;
+    }
+    nav button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      background: #34495e;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    nav button:hover {
+      background: #1abc9c;
+    }
+    .section {
+      display: none;
+      background: white;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .export-btn {
+      margin-top: 15px;
+      padding: 8px 12px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .export-btn:hover {
+      background: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/1047/1047711.png" alt="شعار المكتب">
+    </div>
+    <div class="title">مكتب المحامي السوداني</div>
+    <div class="contact">
+      📞 0123456789<br>
+      ✉️ lawyer@example.com<br>
+      📍 الخرطوم – السودان
+    </div>
+  </header>  <main>
+    <nav>
+      <button onclick="showSection('laws')">القوانين</button>
+      <button onclick="showSection('contracts')">العقود</button>
+      <button onclick="showSection('forms')">النماذج</button>
+      <button onclick="showSection('petitions')">العرائض</button>
+      <button onclick="showSection('cases')">الدعاوى</button>
+      <button onclick="showSection('constitutions')">الدساتير</button>
+      <button onclick="showSection('precedents')">سوابق قضائية</button>
+      <button onclick="showSection('publications')">منشورات قضائية</button>
+    </nav><div id="laws" class="section">
+  <h2>القوانين</h2>
+  <ul>
+    <li><a href="#" target="_blank">قانون المعاملات المدنية</a></li>
+    <li><a href="#" target="_blank">قانون العقوبات</a></li>
+  </ul>
+  <button class="export-btn" onclick="exportPDF('القوانين','laws')">📄 تصدير PDF</button>
+</div>
+
+<div id="contracts" class="section">
+  <h2>العقود</h2>
+  <ul>
+    <li>عقد بيع</li>
+    <li>عقد إيجار</li>
+  </ul>
+  <button class="export-btn" onclick="exportPDF('العقود','contracts')">📄 تصدير PDF</button>
+</div>
+
+<div id="forms" class="section">
+  <h2>النماذج</h2>
+  <ul>
+    <li>نموذج توكيل</li>
+    <li>نموذج شكوى</li>
+  </ul>
+  <button class="export-btn" onclick="exportPDF('النماذج','forms')">📄 تصدير PDF</button>
+</div>
+
+<div id="petitions" class="section">
+  <h2>العرائض</h2>
+  <p>قائمة بالعرائض القانونية.</p>
+  <button class="export-btn" onclick="exportPDF('العرائض','petitions')">📄 تصدير PDF</button>
+</div>
+
+<div id="cases" class="section">
+  <h2>الدعاوى</h2>
+  <p>قائمة بالدعاوى المرفوعة.</p>
+  <button class="export-btn" onclick="exportPDF('الدعاوى','cases')">📄 تصدير PDF</button>
+</div>
+
+<div id="constitutions" class="section">
+  <h2>الدساتير</h2>
+  <p>النصوص الدستورية.</p>
+  <button class="export-btn" onclick="exportPDF('الدساتير','constitutions')">📄 تصدير PDF</button>
+</div>
+
+<div id="precedents" class="section">
+  <h2>سوابق قضائية</h2>
+  <p>أمثلة لأحكام قضائية سابقة.</p>
+  <button class="export-btn" onclick="exportPDF('سوابق قضائية','precedents')">📄 تصدير PDF</button>
+</div>
+
+<div id="publications" class="section">
+  <h2>منشورات قضائية</h2>
+  <p>منشورات رسمية متعلقة بالقانون.</p>
+  <button class="export-btn" onclick="exportPDF('منشورات قضائية','publications')">📄 تصدير PDF</button>
+</div>
+
+  </main>  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+
+    async function exportPDF(title, sectionId) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // إضافة الشعار والبيانات
+      const img = new Image();
+      img.src = 'https://cdn-icons-png.flaticon.com/512/1047/1047711.png';
+      await img.decode();
+      doc.addImage(img, 'PNG', 10, 10, 20, 20);
+
+      doc.setFontSize(14);
+      doc.text('مكتب المحامي السوداني', 105, 15, { align: 'center' });
+      doc.setFontSize(10);
+      doc.text('📞 0123456789   ✉️ lawyer@example.com   📍 الخرطوم – السودان', 105, 22, { align: 'center' });
+
+      doc.setFontSize(16);
+      doc.text(title, 105, 40, { align: 'center' });
+
+      let section = document.getElementById(sectionId);
+      let items = section.querySelectorAll('ul li, p');
+
+      let y = 50;
+      doc.setFontSize(12);
+      items.forEach(el => {
+        let text = el.innerText;
+        doc.text(text, 20, y);
+        y += 10;
+      });
+
+      doc.save(title + '.pdf');
+    }
+  </script></body>
+  </html>
